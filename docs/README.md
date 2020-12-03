@@ -14,7 +14,7 @@ features:
     details: Detail2
   - title: Tag3
     details: Detail3
-footer: 2020
+footer: git clone && cd NoteBook && npm install && npm run dev
 
 ---
 
