@@ -5,6 +5,7 @@ module.exports = {
 		nav: [
 			{ text: '首页', link: '/' },
 			{ text: '博客', items: [
+					{ text: '笔记', link: '/blogs/notes/' },
 					{ text: '转载', link: '/blogs/reprint/' }
 				]
 			},
