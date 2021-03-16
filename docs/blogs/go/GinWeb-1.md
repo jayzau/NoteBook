@@ -42,6 +42,8 @@ import "github.com/gin-gonic/gin"
 
 func main() {
 	r := gin.Default()
+    // gin.H 是 map[string]interface{} 的一种快捷方式
+    // type H map[string]interface{}
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -162,7 +164,25 @@ router.GET("/JSONP", func(context *gin.Context) {
 // http://0.0.0.0:8080/JSONP?callback=func		func({"foo":"bar"});
 ```
 
-### 表单
+### PureJSON
+
+Go 1.6 +
+
+简单对比：
+
+- `c.JSON(200, gin.H{"html": "<b>Hello, world!</b>",})`
+
+  resp: `{"html":"\u003cb\u003eHello, world!\u003c/b\u003e"}`
+
+- `c.PureJSON(200, gin.H{"html": "<b>Hello, world!</b>",})`
+
+  resp: `{"html":"<b>Hello, world!</b>"}`
+
+### ?SecureJSON
+
+防止json劫持。不懂。
+
+### 表单和查询参数
 
 表单验证：
 
@@ -186,4 +206,68 @@ router.POST("/login", func(context *gin.Context) {
 })
 // ShouldBind -> binding.Default 将自动选择合适的绑定
 ```
+
+默认值：
+
+```go
+// 查询参数
+id := context.Query("id")
+page := context.DefaultQuery("page", "0")
+// 表单
+message := context.PostForm("message")
+nick := context.DefaultPostForm("nick", "anonymous")
+```
+
+### 文件上传
+
+- 文件大小限制：`router.MaxMultipartMemory = 8 << 20  // 8 MiB  默认 32 MiB`
+
+- 单文件：`file, err := c.FormFile("file")`
+
+- 多文件：
+
+  ```go
+  form, _ := c.MultipartForm()
+  files := form.File["fileKey"]  // {[]*mime/multipart.FileHeader}
+  ```
+
+- 文件保存：`c.SaveUploadedFile(file, dst)`
+
+实际测试下来文件大小限制并未生效，大于8MiB的文件依然能够正常上传保存。
+
+![chromedriver](/images/go/GinWeb-1/fileSize.jpg)
+
+### 从 reader 读取数据（文件下载）
+
+存在的意义只能想到文件下载。
+
+```go
+router.GET("/someDataFromReader", func(c *gin.Context) {
+    response, err := http.Get("https://avatars.githubusercontent.com/u/42144949")
+    if err != nil || response.StatusCode != http.StatusOK {
+        c.Status(http.StatusServiceUnavailable)
+        return
+    }
+
+    reader := response.Body
+    contentLength := response.ContentLength
+    contentType := response.Header.Get("Content-Type")
+
+    extraHeaders := map[string]string{
+        "Content-Disposition": `attachment; filename="gopher.png"`,
+    }
+
+    c.DataFromReader(http.StatusOK, contentLength, contentType, reader, extraHeaders)
+})
+```
+
+### 优雅地重启或停止
+
+[你想优雅地重启或停止 web 服务器吗？](https://gin-gonic.com/zh-cn/docs/examples/graceful-restart-or-stop/)
+
+没体会到优雅在哪，不过`context.WithTimeout`和`signal.Notify`是个好东西。
+
+### BasicAuth
+
+`Chrome：//restart`
 
