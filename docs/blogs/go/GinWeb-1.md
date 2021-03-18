@@ -543,3 +543,19 @@ r.GET("/test", func(c *gin.Context) {
 })
 ```
 
+### 静态文件服务
+
+```go
+func main() {
+	router := gin.Default()
+    // 内里不够深厚，看不出来 Static 和 StaticFS 方法的区别
+	router.Static("/assets", "./assets")
+	router.StaticFS("/more_static", http.Dir("my_file_system"))
+    // 单文件用 StaticFile
+	router.StaticFile("/favicon.ico", "./resources/favicon.ico")
+
+	// 监听并在 0.0.0.0:8080 上启动服务
+	router.Run(":8080")
+}
+```
+
