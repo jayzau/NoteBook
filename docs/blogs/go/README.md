@@ -5,3 +5,4 @@
 ### gin
 
 - [GinWeb1](./GinWeb-1)
+- [GinWeb2](./GinWeb-2)
