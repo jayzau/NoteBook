@@ -1,5 +1,13 @@
 # PHP标准库（个人常用）
 
+## 字符串相关
+
+- **bin2hex** ( string `$str` ) : string
+
+  ...
+
+---
+
 ## 数组相关
 
 -  **array_change_key_case** ( array `$array` , int `$case` = CASE_LOWER ) : array
@@ -69,6 +77,10 @@
   键值反转。
 
 - **array_key_exists** ( [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed) `$key` , array `$array` ) : bool
+
+  同：**key_exists**
+
+  **查值**：**in_array** ( [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed) `$needle` , array `$haystack` , bool `$strict` = **false** ) : bool
 
 - **array_key_first** ( array `$array` ) : [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed)
 
@@ -156,13 +168,37 @@
 
   典型情况下 `callback` 接受两个参数。`array` 参数的值作为第一个，键名作为第二个。
 
-- **arsort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
+- **排序：**
 
-  python释义：`list().sort(reverse=True)`
+  - **rsort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
 
-  **正向**：**asort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
+    python释义：`list().sort(reverse=True)`
 
-  **注意**：索引不变。
+    **正向**：**sort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
+
+  - **arsort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
+
+    **正向**：**asort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
+
+    **注意**：索引不变。
+
+  - **krsort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
+
+    按`key`逆向排序。
+
+    **正向**：**ksort** ( array `&$array` , int `$sort_flags` = SORT_REGULAR ) : bool
+
+  - **natsort** ( array `&$array` ) : bool
+
+    自然排序：一个和人们通常对字母数字字符串进行排序的方法一样的排序算法并保持原有键／值的关联，这被称为“自然排序”。
+
+    **不区分大小写**：**natcasesort** ( array `&$array` ) : bool
+
+  自定义比较函数：**uasort** , **uksort** , **usort** 。
+
+- **shuffle** ( array `&$array` ) : bool
+
+  打乱数组。
 
 - **compact** ( [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed) `$var_name` , [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed) `...$var_names` ) : array
 
@@ -170,4 +206,103 @@
 
   `var_name`为变量名的字符串形式。
 
-- 
+  **类似**：**list** ( [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed) `$var` , [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed) `...$vars` = ? ) : array
+
+  **区别**：
+
+  ```php
+  <?php
+  
+  $values = array(
+      "Jay",
+      "Jone",
+      "Joe"
+  );
+  
+  list($jay, $jone, $joe) = $values;
+  
+  $joanna = "Joanna";
+  $jessie = "Jessie";
+  $jamie = "Jamie";
+  
+  $female = compact("joanna", "jessie", "jamie");
+  
+  var_dump($jay);
+  var_dump($jone);
+  var_dump($joe);
+  var_dump($female);
+  
+  /*
+   * string(3) "Jay"
+   * string(4) "Jone"
+   * string(3) "Joe"
+   * array(3) {
+   *     ["joanna"]=>
+   *   string(6) "Joanna"
+   *     ["jessie"]=>
+   *   string(6) "Jessie"
+   *     ["jamie"]=>
+   *   string(5) "Jamie"
+   * }
+   */
+  ```
+
+- **count** ( [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed) `$array_or_countable` , int `$mode` = COUNT_NORMAL ) : int
+
+  `mode = COUNT_RECURSIVE`：递归的计数。
+
+  别名：**sizeof**
+
+- **current** ( array|object `$array` ) : [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed)
+
+  别名：**pos**
+
+  相似：
+
+  - **next** ( array `&$array` ) : [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed)
+  - **prev** ( array `&$array` ) : [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed)
+  - **reset** ( array `&$array` ) : [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed)
+  - **end** ( array `&$array` ) : [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed)
+  - **key** ( array `$array` ) : [mixed](https://www.php.net/manual/zh/language.types.declarations.php#language.types.declarations.mixed)
+
+  示例：
+
+  ```php
+  <?php
+  
+  $arr1 = array(
+      "Jay",
+      "Jone",
+      "Joe"
+  );
+  
+  // 初始状态下指向第一个单元
+  var_dump(prev($arr1));    // 越界
+  var_dump(next($arr1));
+  var_dump(reset($arr1));   // 重新指向第一个单元
+  var_dump(next($arr1));
+  var_dump(current($arr1));
+  var_dump(end($arr1));     // 指向最后一个单元
+  var_dump(next($arr1));    // 越界
+  var_dump(prev($arr1));
+  var_dump(end($arr1));     // 重新指向最后一个单元
+  var_dump(prev($arr1));
+  var_dump(current($arr1));
+  
+  /*
+   * bool(false)
+   * bool(false)
+   * string(3) "Jay"
+   * string(4) "Jone"
+   * string(4) "Jone"
+   * string(3) "Joe"
+   * bool(false)
+   * bool(false)
+   * string(3) "Joe"
+   * string(4) "Jone"
+   * string(4) "Jone"
+   */
+  ```
+
+---
+
