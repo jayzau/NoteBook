@@ -7,7 +7,8 @@ module.exports = {
 			{ text: '博客', items: [
 					{ text: '笔记', link: '/blogs/notes/' },
 					{ text: '转载', link: '/blogs/reprint/' },
-					{ text: 'Go', link: '/blogs/go/' }
+					{ text: 'Go', link: '/blogs/go/' },
+					{ text: 'PHP', link: '/blogs/php/' },
 				]
 			},
 			{ text: 'GitHub', link: 'https://github.com/jayzau' }
