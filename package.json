@@ -13,6 +13,7 @@
     "doc": "docs"
   },
   "dependencies": {
+    "sockjs-client": "^1.5.0",
     "vuepress": "^1.7.1"
   },
   "devDependencies": {},

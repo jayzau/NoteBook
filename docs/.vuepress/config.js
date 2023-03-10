@@ -1,5 +1,6 @@
 module.exports = {
 	title: 'Jayzau',
+	port: 8081,
 	description: '好劲!',
 	themeConfig: {
 		nav: [
