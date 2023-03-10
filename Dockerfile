@@ -7,5 +7,5 @@ LABEL "com.github.actions.color"="gray-dark"
 
 RUN apt-get update && apt-get install -y git jq
 
-COPY deploy.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
