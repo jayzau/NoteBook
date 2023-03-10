@@ -8,4 +8,6 @@
 
 ## 环境搭建
 
+- [Docker搭建LNMP环境](./Docker搭建LNMP环境)(2021-08-02)
+
 - [PHP运行环境搭建](../notes/linux/PHP运行环境搭建)(2020-09-28)
