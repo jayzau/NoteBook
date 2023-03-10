@@ -3,7 +3,7 @@
 home: true
 heroImage: /images/homePage/heroImage.jpeg
 heroText: Jayzau
-tagline: 队列才是人生真谛,不断失去,才能不断拥有.
+tagline: 舍.得.
 # actionText: 开始阅读 →
 # actionLink: /
 features:
